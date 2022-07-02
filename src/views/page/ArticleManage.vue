@@ -1,58 +1,25 @@
 <template>
-  <div>
+  <!-- 文章管理页面 -->
+  <div class="ArticleManage">
     <!-- 标题 -->
     <pageTitle title="文章管理页面"></pageTitle>
-    <!-- 文章管理页面 -->
-    <div id="ArticleManage">
-      <!-- 文章列表 -->
-      <div class="article-list">
-        <el-table :data="filterTableData" style="width: 100%">
-          <!-- 标题 -->
-          <el-table-column label="标题" prop="title" width="400" />
-          <!-- 发布时间 -->
-          <el-table-column label="发布时间" prop="time" />
-          <!-- 文章状态 -->
-          <el-table-column label="文章状态">
-            <el-button size="small" style="background: #0ccf0c; color: #fff"
-              >已发布</el-button
-            >
-          </el-table-column>
-          <!-- 操作按钮 -->
-          <el-table-column label="操作">
-            <template #default="scope">
-              <!-- 删除按钮 -->
-              <el-button size="small" @click="handleDelete()" type="danger"
-                >删除</el-button
-              >
-              <!-- 查看评论  value值   max超过这个值 会显示+  -->
-              <el-badge
-                :value="2"
-                :max="99"
-                class="item"
-                style="margin-left: 10px"
-              >
-                <el-button size="small" @click="handleArticleComment"
-                  >查看评论</el-button
-                >
-              </el-badge>
-            </template>
-          </el-table-column>
-          <!-- 右侧 搜索框 -->
-          <el-table-column align="left" width="150">
-            <!-- 搜索框 -->
-            <template #header>
-              <el-input v-model="search" size="small" placeholder="搜索文章" />
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-    </div>
+    <!-- 文章管理页面头部 -->
+    <ul class="article-manage-header">
+      <li>标题</li>
+      <li>发布时间</li>
+      <li>文章状态</li>
+      <li>操作</li>
+      <li>搜索框</li>
+    </ul>
+    <ul>
+      <li v-for="(item, index) in tableData" :key="index"></li>
+    </ul>
   </div>
 </template>
 
 <script setup>
 import { computed, ref } from "vue";
-import {router} from "@/router";
+import { router } from "@/router";
 import pageTitle from "../../components/pageTitle.vue";
 const search = ref("");
 
@@ -65,16 +32,9 @@ const filterTableData = computed(() =>
   )
 );
 
-// 查看文章评论
-const handleArticleComment = () => {
-  router.push({ name: "comment" });
-};
-// 删除文章
-const handleDelete = () => {
-  console.log("删除成功");
-};
 
-//
+
+// 数据
 const tableData = [
   {
     title: "使用JavaScript实现字典",
@@ -127,28 +87,32 @@ const tableData = [
 ];
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 /* 文章管理页面 */
-#ArticleManage {
+.ArticleManage {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
 
-  /* 文章列表 */
-  .article-list {
-    width: 80%;
+  /* 文章管理页面头部 */
+  .article-manage-header {
+    display: flex;
+    margin: 0 auto;
+    width: 90%;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
+    background: #282B2F;
+    border-radius: 4px;
 
-    .el-table .cell {
-      overflow: visible;
+    li:nth-child(1) {
+      flex-grow: 1;
+      text-indent: 10px;
     }
 
-    el-table {
-      display: flex;
-      position: relative;
-
-      .el-table-column {
-        flex-grow: 1;
-      }
+    li {
+      width: 15%;
+      height: 50px;
+      line-height: 50px;
     }
   }
 }

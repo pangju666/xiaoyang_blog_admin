@@ -25,15 +25,16 @@ const props = defineProps({
 .title {
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 
   span {
-    font-size: 35px;
-    color: skyblue;
+    font-size: 30px;
+    color: #747679;
   }
 
   h2 {
     margin-left: 5px;
-    font-size: 30px;
+    font-size: 25px;
   }
 }
 </style>

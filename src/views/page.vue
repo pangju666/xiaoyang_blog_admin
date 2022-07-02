@@ -3,7 +3,10 @@
     <!-- 侧边栏 -->
     <div class="sidebar">
       <!-- 侧边栏标题 -->
-      <p class="sidebar-title">后台管理系统</p>
+      <div class="sidebar-title">
+        <img src="../assets/icon.svg" alt="" />
+        <span>manage</span>
+      </div>
       <!-- 侧边栏ul -->
       <ul class="sidebar-ul">
         <li v-for="(item, index) in sidebar" :key="index">
@@ -16,14 +19,12 @@
     <div class="right-main">
       <!-- 头部 面包屑 -->
       <div class="crumbs">
-        <el-breadcrumb :separator-icon="ArrowRight">
-          <el-breadcrumb-item
-            v-for="(item, index) in crumbs"
-            :key="index"
-            :to="{ path: item.path }"
-            >{{ item.content }}</el-breadcrumb-item
-          >
-        </el-breadcrumb>
+        <ul class="crumbs-ul">
+          <li class="crumbs-li" v-for="(item, index) in crumbs" :key="index" @click="goToPage(item.path)">
+            {{ item.content }}
+          </li>
+        </ul>
+
         <!-- 头像 -->
         <img class="img" src="@/assets/photo.jpg" alt="" />
       </div>
@@ -36,8 +37,8 @@
 </template>
 
 <script setup>
+import { router } from "@/router";
 import { ref } from "vue";
-import { ArrowRight } from "@element-plus/icons-vue";
 
 // 侧边栏 路由
 let sidebar = ref([
@@ -49,52 +50,88 @@ let sidebar = ref([
 // 面包屑 路由
 let crumbs = ref([
   {
-    path: "/page/home",
+    path: "home",
     content: "Home",
   },
   {
-    path: "/page/ArticleManage",
+    path: "ArticleManage",
     content: "ArticleManage",
   },
   {
-    path: "/page/ArticleEdit",
+    path: "ArticleEdit",
     content: "ArticleEdit",
   },
 ]);
+
+// goToPage 方法 点击跳转路由
+let goToPage = (value) => {
+  router.push({ name: value });
+}
 </script>
 
 <style lang="less" scoped>
+.page::-webkit-scrollbar {
+  display: none;
+}
+
 .page {
+  position: relative;
+  overflow: scroll;
   display: flex;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
+  background: #22252a;
+  color: #747679;
 
   /* 侧边栏 */
   .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
     width: 200px;
-    height: 100%;
-    background: #545c64;
+    height: 100vh;
+
+    &:hover {
+      box-shadow: 1px 0 8px -8px #160b0b;
+    }
 
     /* 侧边栏标题 */
     .sidebar-title {
-      height: 70px;
-      line-height: 70px;
-      text-align: center;
-      font-size: 22px;
-      color: rgb(177, 169, 169);
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      margin: 0 10px;
+      height: 50px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+      img {
+        width: 25px;
+        height: 25px;
+        transition: 1s;
+        cursor: pointer;
+
+        &:hover {
+          transform: rotate(360deg);
+        }
+      }
+
+      span {
+        margin-left: 10px;
+        font-size: 18px;
+        color: #e2e4e7;
+        cursor: pointer;
+      }
     }
 
     /* 侧边栏ul */
     .sidebar-ul {
       display: flex;
       flex-direction: column;
+      background: #22252a;
+
       li {
         width: 100%;
         height: 50px;
-
-        &:hover {
-          background: #434a50;
-        }
 
         a {
           display: flex;
@@ -102,10 +139,10 @@ let crumbs = ref([
           align-items: center;
           width: 100%;
           height: 100%;
-          color: rgb(177, 169, 169);
+          color: #bbbec2;
 
           &:hover {
-            color: rgb(233, 233, 53);
+            color: #17c2d7;
           }
         }
       }
@@ -117,20 +154,40 @@ let crumbs = ref([
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    margin-left: 200px;
     height: 100%;
     width: 100px;
+
     /* 面包屑 */
     .crumbs {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 0 20px;
+      align-items: center;
+      padding: 10px;
+      margin: 0 10px;
       width: 100%;
-      height: 70px;
-      box-sizing: border-box;
-      background: #eeee;
+      height: 50px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+      .crumbs-ul {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        list-style-type: none;
+
+        .crumbs-li {
+          margin-left: 20px;
+          cursor: pointer;
+
+          &:hover {
+            color: #17c2d7;
+          }
+        }
+      }
 
       .img {
+        margin-right: 50px;
         width: 50px;
         height: 50px;
         border-radius: 50%;
@@ -143,7 +200,6 @@ let crumbs = ref([
       width: 100%;
       height: 100%;
       box-sizing: border-box;
-      background: #fff;
     }
   }
 }

@@ -40,7 +40,6 @@
 <script setup>
 //标题组件
 import pageTitle from "../../components/pageTitle.vue";
-// bytemd
 import { ref } from "vue";
 
 // 文章类型选择框 数据
