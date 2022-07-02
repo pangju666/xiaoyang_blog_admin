@@ -1,8 +1,6 @@
 <template>
   <!-- 文章编辑发布 -->
   <div class="article-edit">
-    <!-- 标题 -->
-    <pageTitle title="文章编辑页面"></pageTitle>
     <!-- 文章编辑页面盒子 -->
     <div class="article-edit-page-box">
       <!-- 文章编辑页面盒子头部 -->
@@ -38,9 +36,6 @@
 </template>
 
 <script setup>
-//标题组件
-import pageTitle from "../../components/pageTitle.vue";
-// bytemd
 import { ref } from "vue";
 
 // 文章类型选择框 数据

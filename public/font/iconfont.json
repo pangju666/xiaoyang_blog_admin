@@ -1,0 +1,58 @@
+{
+  "id": "3511477",
+  "name": "xiaoyang_blog_admin",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "管理页面图标",
+  "glyphs": [
+    {
+      "icon_id": "667792",
+      "name": "评论",
+      "font_class": "pinglun",
+      "unicode": "e6ad",
+      "unicode_decimal": 59053
+    },
+    {
+      "icon_id": "1186353",
+      "name": "人数",
+      "font_class": "renshu",
+      "unicode": "e6b6",
+      "unicode_decimal": 59062
+    },
+    {
+      "icon_id": "3851381",
+      "name": "文章",
+      "font_class": "wenzhang",
+      "unicode": "e668",
+      "unicode_decimal": 58984
+    },
+    {
+      "icon_id": "6447187",
+      "name": "浏览",
+      "font_class": "liulan",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    },
+    {
+      "icon_id": "668429",
+      "name": "编辑",
+      "font_class": "bianji",
+      "unicode": "e6b0",
+      "unicode_decimal": 59056
+    },
+    {
+      "icon_id": "673799",
+      "name": "首页",
+      "font_class": "shouye",
+      "unicode": "e6cb",
+      "unicode_decimal": 59083
+    },
+    {
+      "icon_id": "13872294",
+      "name": "文章管理",
+      "font_class": "wenzhangguanli",
+      "unicode": "e652",
+      "unicode_decimal": 58962
+    }
+  ]
+}

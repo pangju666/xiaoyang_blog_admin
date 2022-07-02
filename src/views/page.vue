@@ -1,31 +1,48 @@
 <template>
   <div class="page">
     <!-- 侧边栏 -->
-    <div class="sidebar">
-      <!-- 侧边栏标题 -->
-      <p class="sidebar-title">后台管理系统</p>
-      <!-- 侧边栏ul -->
-      <ul class="sidebar-ul">
-        <li v-for="(item, index) in sidebar" :key="index">
-          <router-link :to="item.path">{{ item.title }}</router-link>
-        </li>
-      </ul>
-    </div>
+    <ul class="sidebar-ul" ref="mySidebar">
+      <li v-for="(item, index) in sidebar" :key="index">
+        <i
+          :class="item.icon"
+          @click="
+            goToPage(item.name);
+            addRouter(item.name, item.title);
+          "
+        ></i>
+        <router-link
+          :to="item.path"
+          @click="addRouter(item.name, item.title)"
+          >{{ item.title }}</router-link
+        >
+      </li>
+    </ul>
 
     <!-- 右侧内容 -->
-    <div class="right-main">
+    <div class="right-main" ref="rightMain">
       <!-- 头部 面包屑 -->
       <div class="crumbs">
-        <el-breadcrumb :separator-icon="ArrowRight">
-          <el-breadcrumb-item
-            v-for="(item, index) in crumbs"
+        <!-- 上半部分内容 -->
+        <div class="crumbs-top-content">
+          <!-- 图标容器 -->
+          <div class="iconfont-block" @click="ChangeSidebarWidth">
+            <i class="iconfont icon-shouye"></i>
+          </div>
+          <!-- 标题 -->
+          <span class="title">首页</span>
+          <!-- 头像 -->
+          <img class="img" src="@/assets/photo.jpg" alt="" />
+        </div>
+        <!-- 下半部分内容 -->
+        <div class="crumbs-bottom-content">
+          <button
+            v-for="(item, index) in HistoryButton"
             :key="index"
-            :to="{ path: item.path }"
-            >{{ item.content }}</el-breadcrumb-item
+            @click="goToPage(item.path)"
           >
-        </el-breadcrumb>
-        <!-- 头像 -->
-        <img class="img" src="@/assets/photo.jpg" alt="" />
+            {{ item.name }}
+          </button>
+        </div>
       </div>
       <!-- 右侧内容 路由渲染出口 -->
       <div class="right--content">
@@ -36,78 +53,135 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { ArrowRight } from "@element-plus/icons-vue";
+import { router } from "@/router";
+import { ref, onMounted } from "vue";
 
 // 侧边栏 路由
 let sidebar = ref([
-  { path: "/page/home", title: "首页" },
-  { path: "/page/ArticleManage", title: "文章管理页面" },
-  { path: "/page/ArticleEdit", title: "文章编辑页面" },
-]);
-
-// 面包屑 路由
-let crumbs = ref([
   {
     path: "/page/home",
-    content: "Home",
+    title: "首页",
+    icon: "iconfont icon-shouye",
+    name: "home",
   },
   {
     path: "/page/ArticleManage",
-    content: "ArticleManage",
+    title: "文章管理页面",
+    icon: "iconfont icon-wenzhangguanli",
+    name: "ArticleManage",
   },
   {
     path: "/page/ArticleEdit",
-    content: "ArticleEdit",
+    title: "文章编辑页面",
+    icon: "iconfont icon-bianji",
+    name: "ArticleEdit",
   },
 ]);
+
+// 历史按钮
+let HistoryButton = ref([
+  {
+    name: "首页",
+    path: "home",
+  },
+]);
+
+let mySidebar = ref(null);
+let rightMain = ref(null);
+let domSidebar = ref();
+let domMain = ref();
+
+// 获取dom元素
+onMounted(() => {
+  domSidebar.value = mySidebar.value;
+  domMain.value = rightMain.value;
+});
+
+//改变侧边栏宽度
+let ChangeSidebarWidth = () => {
+  if (domSidebar.value.offsetWidth == "200") {
+    domSidebar.value.style.width = "55px";
+    domMain.value.style.marginLeft = "55px";
+  } else {
+    domSidebar.value.style.width = "200px";
+    domMain.value.style.marginLeft = "200px";
+  }
+};
+
+// 点击 跳转路由
+let goToPage = (name) => {
+  router.push({ name: name });
+};
+
+// 添加路由
+let addRouter = (path, title) => {
+  for (let i = 0; i < HistoryButton.value.length; i++) {
+    if (
+      HistoryButton.value[i].name == title &&
+      HistoryButton.value[i].path == path
+    ) {
+      return;
+    } else {
+      HistoryButton.value.push({
+        name: title,
+        path: path,
+      });
+      console.log(HistoryButton.value);
+      return;
+    }
+    return;
+  }
+};
 </script>
 
 <style lang="less" scoped>
+/* 隐藏页面滚动条 */
+.page::-webkit-scrollbar {
+  display: none;
+}
+
 .page {
+  overflow: scroll !important;
+  position: relative;
   display: flex;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
+  color: rgb(191, 203, 217);
 
-  /* 侧边栏 */
-  .sidebar {
+  /* 侧边栏ul */
+  .sidebar-ul {
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow: hidden;
     width: 200px;
-    height: 100%;
-    background: #545c64;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #304156;
+    transition: 1s;
 
-    /* 侧边栏标题 */
-    .sidebar-title {
-      height: 70px;
-      line-height: 70px;
-      text-align: center;
-      font-size: 22px;
-      color: rgb(177, 169, 169);
-    }
-
-    /* 侧边栏ul */
-    .sidebar-ul {
+    li {
       display: flex;
-      flex-direction: column;
-      li {
-        width: 100%;
-        height: 50px;
+      align-items: center;
+      width: 100%;
+      height: 50px;
 
-        &:hover {
-          background: #434a50;
-        }
+      &:hover {
+        background: #263445;
+      }
 
-        a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-          height: 100%;
-          color: rgb(177, 169, 169);
+      a {
+        flex-grow: 1;
+        font-size: 15px;
+        white-space: nowrap;
+        color: rgb(191, 203, 217);
+      }
 
-          &:hover {
-            color: rgb(233, 233, 53);
-          }
-        }
+      .iconfont {
+        margin: 0 20px;
+        font-size: 20px;
+        cursor: pointer;
       }
     }
   }
@@ -117,23 +191,82 @@ let crumbs = ref([
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    margin-left: 200px;
     height: 100%;
-    width: 100px;
+    width: 80px;
+    color: #606266;
+    transition: all 1s;
+
     /* 面包屑 */
     .crumbs {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
       width: 100%;
-      height: 70px;
-      box-sizing: border-box;
-      background: #eeee;
+      height: 80px;
+      background: #fff;
+      color: #000;
 
-      .img {
-        width: 50px;
+      /* 上半部分内容 */
+      .crumbs-top-content {
+        display: flex;
+        width: 100%;
         height: 50px;
-        border-radius: 50%;
+        box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
+
+        .iconfont-block {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 50px;
+          height: 50px;
+
+          .iconfont {
+            font-size: 30px;
+            cursor: pointer;
+          }
+
+          &:hover {
+            background: #f0f2f5;
+          }
+        }
+
+        .title {
+          display: flex;
+          align-items: center;
+          flex-grow: 1;
+          text-indent: 10px;
+          font-size: 16px;
+        }
+
+        img {
+          margin-right: 20px;
+          width: 45px;
+          height: 45px;
+          border-radius: 50%;
+        }
+      }
+
+      /* 下半部分内容 */
+      .crumbs-bottom-content {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 30px;
+
+        button {
+          margin: 0 10px;
+          padding: 0 10px;
+          height: 80%;
+          outline: none;
+          border: 1px solid #d8dce5;
+          color: #495060;
+          background: #ffffff;
+          box-sizing: border-box;
+          cursor: pointer;
+
+          &:last-child {
+            background: #42b983;
+            color: #fff;
+          }
+        }
       }
     }
 
@@ -143,7 +276,7 @@ let crumbs = ref([
       width: 100%;
       height: 100%;
       box-sizing: border-box;
-      background: #fff;
+      background: #f0f2f5;
     }
   }
 }
